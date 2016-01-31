@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/post_message"
+            android:layout_margin="10dp"
+            android:layout_gravity="top"
+            android:inputType="textMultiLine|textImeMultiLine"
+            android:hint="@string/msg_input"
+            android:gravity="top"
+            android:maxLength="3000"
+            android:maxLines="1000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_cancel"
+            android:id="@+id/cancel_button" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_post"
+            android:id="@+id/submit_button" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Ncmboard</string>
+    <string name="action_settings">Settings</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_post">Post</string>
+    <string name="msg_input">Please input message...</string>
+</resources>
