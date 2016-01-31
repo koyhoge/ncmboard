@@ -16,6 +16,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nifty.cloud.mb.core.DoneCallback;
+import com.nifty.cloud.mb.core.LoginCallback;
+import com.nifty.cloud.mb.core.NCMB;
+import com.nifty.cloud.mb.core.NCMBException;
+import com.nifty.cloud.mb.core.NCMBObject;
+import com.nifty.cloud.mb.core.NCMBObjectService;
+import com.nifty.cloud.mb.core.NCMBUser;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
     /**  Request code for floating action button */
     public static final int REQ_CODE_FAB = 1;
 
-    private String currentUserName = null;
+    /** Object class name for messages */
+    private static final String NCMB_CLASSNAME_MESSAGES = "messages";
+
+    /** Current user object */
+    public NCMBUser currentUser = null;
 
     protected ListView messageView;
     protected List<MessageItem> messages;
@@ -33,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize NCMB
+        String app_key = "xxxxxxxx";
+        String client_key = "xxxxxxxx";
+        NCMB.initialize(this, app_key, client_key);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -53,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentUserName == null) {
+                if (currentUser == null) {
                     Toast.makeText(MainActivity.this,
                             "Please login first",
                             Toast.LENGTH_LONG)
@@ -103,15 +120,59 @@ public class MainActivity extends AppCompatActivity {
      * @param item appended message item
      */
     protected void appendMessage(MessageItem item) {
-        messages.add(item);
-        messageAdapter.notifyDataSetChanged();
-    }
+        final MessageItem tmpItem = item;
 
+        NCMBObject messageObj = new NCMBObject(NCMB_CLASSNAME_MESSAGES);
+        messageObj.put("userId", currentUser.getObjectId());
+        messageObj.put("userName", currentUser.getUserName());
+        messageObj.put("message", item.getMessage());
+
+        messageObj.saveInBackground(new DoneCallback() {
+            @Override
+            public void done(NCMBException e) {
+                if (e != null) {
+                    Toast.makeText(MainActivity.this,
+                            "Message post failed",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+                // update all messages
+                loadMessages();
+            }
+        });
+    }
     /**
      * load all messages already exists
      */
     protected void loadMessages() {
-        // do nothing yet
+        NCMBObjectService service = (NCMBObjectService)NCMB.factory(NCMB.ServiceType.OBJECT);
+        List<NCMBObject> list = null;
+        try {
+            list = service.searchObject(NCMB_CLASSNAME_MESSAGES, null);
+        } catch (NCMBException e) {
+            Toast.makeText(MainActivity.this,
+                    "Failed loading messages",
+                    Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        List<MessageItem> tmpMessages = new ArrayList<MessageItem>();
+        for (NCMBObject obj : list) {
+            MessageItem item = new MessageItem();
+            item.setUserName(obj.getString("userName"));
+            item.setUserId(obj.getString("userId"));
+            item.setMessage(obj.getString("message"));
+            item.setTimestamp(obj.getUpdateDate());
+
+            tmpMessages.add(item);
+        }
+
+        // update messages
+        messages.clear();
+        messages.addAll(tmpMessages);
+        messageAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -119,10 +180,10 @@ public class MainActivity extends AppCompatActivity {
      * @return user name
      */
     public String currentUserName() {
-        if (currentUserName == null) {
+        if (currentUser == null) {
             return "";
         }
-        return currentUserName;
+        return currentUser.getUserName();
     }
 
     @Override
@@ -147,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
         final EditText user = (EditText) prompt.findViewById(R.id.login_name);
         final EditText pass = (EditText) prompt.findViewById(R.id.login_password);
 
+//        user.setText("testuser1");
+//        pass.setText("testhogehoge");
+
         alertDialogBuilder.setTitle("NcmBoard LOGIN");
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -163,8 +227,22 @@ public class MainActivity extends AppCompatActivity {
                                         .show();
                                 showLoginDialog();
                             } else {
-                                // non check password, any user can login
-                                currentUserName = username;
+                                NCMBUser.loginInBackground(username, password, new LoginCallback() {
+                                    @Override
+                                    public void done(NCMBUser ncmbUser, NCMBException e) {
+                                        if (e != null) {
+                                            // Login failed
+                                            Toast.makeText(MainActivity.this,
+                                                    "Invalid username or passwrd",
+                                                    Toast.LENGTH_LONG)
+                                                    .show();
+                                            showLoginDialog();
+                                        } else {
+                                            // Login successed
+                                            currentUser = ncmbUser;
+                                        }
+                                    }
+                                });
                             }
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this,e.getMessage(), Toast.LENGTH_LONG).show();
