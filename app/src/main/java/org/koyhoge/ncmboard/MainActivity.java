@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
         final EditText user = (EditText) prompt.findViewById(R.id.login_name);
         final EditText pass = (EditText) prompt.findViewById(R.id.login_password);
 
-
         alertDialogBuilder.setTitle("NcmBoard LOGIN");
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
