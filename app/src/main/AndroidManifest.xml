@@ -3,6 +3,12 @@
     package="org.koyhoge.ncmboard">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission android:name="org.koyhoge.ncmboard.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="org.koyhoge.ncmboard.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -10,6 +16,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <meta-data android:name="openPushStartActivity" android:value=".MainActivity"/>
+        <meta-data android:name="smallIcon" android:resource="@mipmap/ic_launcher"/>
+        <meta-data android:name="notificationOverlap" android:value="0"/>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -24,6 +36,26 @@
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize"
             />
+
+        <receiver
+            android:name="com.nifty.cloud.mb.core.NCMBGcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="org.koyhoge.ncmboard"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.nifty.cloud.mb.core.NCMBGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
