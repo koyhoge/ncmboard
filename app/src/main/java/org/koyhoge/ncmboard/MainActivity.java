@@ -201,33 +201,34 @@ public class MainActivity extends AppCompatActivity {
      * load all messages already exists
      */
     protected void loadMessages() {
-        NCMBObjectService service = (NCMBObjectService)NCMB.factory(NCMB.ServiceType.OBJECT);
-        List<NCMBObject> list = null;
-        try {
-            list = service.searchObject(NCMB_CLASSNAME_MESSAGES, null);
-        } catch (NCMBException e) {
-            Toast.makeText(MainActivity.this,
-                    "Failed loading messages",
-                    Toast.LENGTH_LONG)
-                    .show();
-            return;
-        }
+        NCMBQuery<NCMBObject> query = new NCMBQuery<>(NCMB_CLASSNAME_MESSAGES);
+        query.findInBackground(new FindCallback<NCMBObject>() {
+            @Override
+            public void done(List<NCMBObject> list, NCMBException e) {
+                if (e != null) {
+                    Toast.makeText(MainActivity.this,
+                            "Failed loading messages",
+                            Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    List<MessageItem> tmpMessages = new ArrayList<MessageItem>();
+                    for (NCMBObject obj : list) {
+                        MessageItem item = new MessageItem();
+                        item.setUserName(obj.getString("userName"));
+                        item.setUserId(obj.getString("userId"));
+                        item.setMessage(obj.getString("message"));
+                        item.setTimestamp(obj.getUpdateDate());
 
-        List<MessageItem> tmpMessages = new ArrayList<MessageItem>();
-        for (NCMBObject obj : list) {
-            MessageItem item = new MessageItem();
-            item.setUserName(obj.getString("userName"));
-            item.setUserId(obj.getString("userId"));
-            item.setMessage(obj.getString("message"));
-            item.setTimestamp(obj.getUpdateDate());
+                        tmpMessages.add(item);
+                    }
 
-            tmpMessages.add(item);
-        }
-
-        // update messages
-        messages.clear();
-        messages.addAll(tmpMessages);
-        messageAdapter.notifyDataSetChanged();
+                    // update messages
+                    messages.clear();
+                    messages.addAll(tmpMessages);
+                    messageAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     /**
