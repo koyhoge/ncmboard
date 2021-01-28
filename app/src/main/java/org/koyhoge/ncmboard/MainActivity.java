@@ -96,23 +96,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bundle bundle = data.getExtras();
-        if (requestCode == REQ_CODE_FAB) {
-            if (resultCode == RESULT_OK) {
-                String message = bundle.getString("key.StringData");
+        if (data != null) {
+            Bundle bundle = data.getExtras();
+            if (requestCode == REQ_CODE_FAB) {
+                if (resultCode == RESULT_OK) {
+                    String message = bundle.getString("key.StringData");
 
-                MessageItem item = new MessageItem();
-                item.setMessage(message);
-                item.setUserName(currentUserName());
-                item.setTimestamp(new Date());
-                try {
-                    appendMessage(item);
-                } catch (NCMBException e) {
-                    e.printStackTrace();
+                    MessageItem item = new MessageItem();
+                    item.setMessage(message);
+                    item.setUserName(currentUserName());
+                    item.setTimestamp(new Date());
+                    try {
+                        appendMessage(item);
+                    } catch (NCMBException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
+            }
         }
+
     }
 
     /**
