@@ -28,14 +28,14 @@ public class MessageItemAdapter extends ArrayAdapter<MessageItem> {
     }
 
     /**
-     * @param position postion of item
+     * @param position    postion of item
      * @param convertView
      * @param parent
      * @return convertedView
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MessageItem item = (MessageItem)getItem(position);
+        MessageItem item = getItem(position);
 
         // create convertView when null only
         if (null == convertView) {
@@ -43,14 +43,14 @@ public class MessageItemAdapter extends ArrayAdapter<MessageItem> {
         }
 
         // Set data to each Widgets
-        TextView userNameView = (TextView)convertView.findViewById(R.id.username);
+        TextView userNameView = convertView.findViewById(R.id.username);
         userNameView.setText(item.getUserName());
 
-        TextView timestampView = (TextView)convertView.findViewById(R.id.timestamp);
+        TextView timestampView = convertView.findViewById(R.id.timestamp);
         DateFormat df = getDateFormat();
         timestampView.setText(df.format(item.getTimestamp()));
 
-        TextView messageView = (TextView)convertView.findViewById(R.id.message);
+        TextView messageView = convertView.findViewById(R.id.message);
         messageView.setText(item.getMessage());
 
         return convertView;
@@ -58,6 +58,7 @@ public class MessageItemAdapter extends ArrayAdapter<MessageItem> {
 
     /**
      * Get DateFormat object to convert timestamp
+     *
      * @return DateFormat object in internal use
      */
     protected DateFormat getDateFormat() {
