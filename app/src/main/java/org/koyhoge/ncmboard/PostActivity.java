@@ -1,16 +1,16 @@
 package org.koyhoge.ncmboard;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class PostActivity extends AppCompatActivity implements OnClickListener{
+import androidx.appcompat.app.AppCompatActivity;
+
+public class PostActivity extends AppCompatActivity implements OnClickListener {
     Button submitButton;
     Button cancelButton;
 
@@ -19,18 +19,18 @@ public class PostActivity extends AppCompatActivity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        submitButton = (Button) findViewById(R.id.submit_button);
+        submitButton = findViewById(R.id.submit_button);
         submitButton.setOnClickListener(this);
 
-        cancelButton = (Button) findViewById(R.id.cancel_button);
+        cancelButton = findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v.equals(submitButton)) {
-            EditText te = (EditText) findViewById(R.id.post_message);
-            SpannableStringBuilder sb = (SpannableStringBuilder)te.getText();
+            EditText te = findViewById(R.id.post_message);
+            SpannableStringBuilder sb = (SpannableStringBuilder) te.getText();
             String message = sb.toString();
 
             Intent data = new Intent();
