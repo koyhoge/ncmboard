@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ncmboard.iml" filepath="$PROJECT_DIR$/ncmboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ncmboard.iml" filepath="$PROJECT_DIR$/.idea/ncmboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ncmboard.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ncmboard.app.iml" />
     </modules>
   </component>
 </project>

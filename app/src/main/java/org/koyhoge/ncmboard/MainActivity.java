@@ -1,27 +1,27 @@
 package org.koyhoge.ncmboard;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    /**  Request code for floating action button */
+    /**
+     * Request code for floating action button
+     */
     public static final int REQ_CODE_FAB = 1;
 
     private String currentUserName = null;
@@ -35,38 +35,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         showLoginDialog();
 
         // setup message container
-        messages = new ArrayList<MessageItem>();
+        messages = new ArrayList<>();
         messageAdapter = new MessageItemAdapter(this, 0, messages);
-        messageView = (ListView)findViewById(R.id.listView);
+        messageView = findViewById(R.id.listView);
         messageView.setAdapter(messageAdapter);
 
         // load exists messages
         loadMessages();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentUserName == null) {
-                    Toast.makeText(MainActivity.this,
-                            "Please login first",
-                            Toast.LENGTH_LONG)
-                            .show();
-                    showLoginDialog();
-                    return;
-                }
-                int requestCode = REQ_CODE_FAB;
-                startActivityForResult(new Intent(
-                        MainActivity.this,
-                        PostActivity.class
-                ), requestCode);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            if (currentUserName == null) {
+                Toast.makeText(MainActivity.this,
+                        "Please login first",
+                        Toast.LENGTH_LONG)
+                        .show();
+                showLoginDialog();
+                return;
             }
+            startActivityForResult(new Intent(
+                    MainActivity.this,
+                    PostActivity.class
+            ), REQ_CODE_FAB);
         });
     }
 
@@ -80,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bundle bundle = data.getExtras();
-        switch (requestCode) {
-            case REQ_CODE_FAB:
+        if (data != null) {
+            Bundle bundle = data.getExtras();
+            if (requestCode == REQ_CODE_FAB) {
                 if (resultCode == RESULT_OK) {
                     String message = bundle.getString("key.StringData");
 
@@ -91,15 +87,16 @@ public class MainActivity extends AppCompatActivity {
                     item.setUserName(currentUserName());
                     item.setTimestamp(new Date());
                     appendMessage(item);
-                } else if (resultCode == RESULT_CANCELED) {
-                    // Do nothing
                 }
-                break;
+
+            }
         }
+
     }
 
     /**
      * Append message item to list
+     *
      * @param item appended message item
      */
     protected void appendMessage(MessageItem item) {
@@ -144,15 +141,12 @@ public class MainActivity extends AppCompatActivity {
         View prompt = li.inflate(R.layout.login_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(prompt);
-        final EditText user = (EditText) prompt.findViewById(R.id.login_name);
-        final EditText pass = (EditText) prompt.findViewById(R.id.login_password);
+        final EditText user = prompt.findViewById(R.id.login_name);
+        final EditText pass = prompt.findViewById(R.id.login_password);
 
         alertDialogBuilder.setTitle("NcmBoard LOGIN");
         alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id)
-                    {
+                .setPositiveButton("OK", (dialog, id) -> {
                         String password = pass.getText().toString();
                         String username = user.getText().toString();
                         try {
@@ -168,17 +162,10 @@ public class MainActivity extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this,e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
                     }
                 });
 
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.cancel();
-            }
-        });
+        alertDialogBuilder.setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
 
         alertDialogBuilder.show();
     }
