@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "630441480174",
+    "project_id": "fcmpush-6a214",
+    "storage_bucket": "fcmpush-6a214.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630441480174:android:03e806c05abcbfd08dc8ff",
+        "android_client_info": {
+          "package_name": "jimmy.huynh.fcmpush"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630441480174-kdqrjl6k85ei2s6ho9nr3okdd5m9kt1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOv1Siic7s4VeEg_uBiWC96wgifgeK1PE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630441480174-kdqrjl6k85ei2s6ho9nr3okdd5m9kt1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630441480174:android:e0eb7a0ee13f469a8dc8ff",
+        "android_client_info": {
+          "package_name": "org.koyhoge.ncmboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630441480174-kdqrjl6k85ei2s6ho9nr3okdd5m9kt1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOv1Siic7s4VeEg_uBiWC96wgifgeK1PE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630441480174-kdqrjl6k85ei2s6ho9nr3okdd5m9kt1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

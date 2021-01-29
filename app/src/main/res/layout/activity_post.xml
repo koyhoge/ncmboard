@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
             android:id="@+id/post_message"
-            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:inputType="textMultiLine|textImeMultiLine"
-            android:hint="@string/msg_input"
+            android:layout_margin="10dp"
+            android:autofillHints="@string/msg_input"
             android:gravity="top"
+            android:hint="@string/msg_input"
+            android:inputType="textMultiLine|textImeMultiLine"
             android:maxLength="3000"
             android:maxLines="1000" />
     </LinearLayout>
@@ -25,20 +27,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/cancel_button"
+            style="@style/AppTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_cancel"
-            android:id="@+id/cancel_button" />
+            android:text="@string/label_cancel" />
 
         <Button
+            android:id="@+id/submit_button"
+            style="@style/AppTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_post"
-            android:id="@+id/submit_button" />
+            android:text="@string/label_post" />
     </LinearLayout>
 
 </LinearLayout>
